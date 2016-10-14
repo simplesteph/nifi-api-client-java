@@ -20,4 +20,4 @@ target
 .gradle
 build
 
-.idea
+.idea/
