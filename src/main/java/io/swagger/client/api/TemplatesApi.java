@@ -121,8 +121,8 @@ public class TemplatesApi {
      * @return TemplateDTO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public TemplateDTO exportTemplate(String id) throws ApiException {
-        ApiResponse<TemplateDTO> resp = exportTemplateWithHttpInfo(id);
+    public String exportTemplate(String id) throws ApiException {
+        ApiResponse<String> resp = exportTemplateWithHttpInfo(id);
         return resp.getData();
     }
 
@@ -133,9 +133,9 @@ public class TemplatesApi {
      * @return ApiResponse&lt;TemplateDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<TemplateDTO> exportTemplateWithHttpInfo(String id) throws ApiException {
+    public ApiResponse<String> exportTemplateWithHttpInfo(String id) throws ApiException {
         com.squareup.okhttp.Call call = exportTemplateCall(id, null, null);
-        Type localVarReturnType = new TypeToken<TemplateDTO>(){}.getType();
+        Type localVarReturnType = new TypeToken<String>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
