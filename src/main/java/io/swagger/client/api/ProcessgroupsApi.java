@@ -2826,8 +2826,8 @@ public class ProcessgroupsApi {
      * @return TemplateEntity
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public TemplateEntity uploadTemplate(String id, File template) throws ApiException {
-        ApiResponse<TemplateEntity> resp = uploadTemplateWithHttpInfo(id, template);
+    public String uploadTemplate(String id, File template) throws ApiException {
+        ApiResponse<String> resp = uploadTemplateWithHttpInfo(id, template);
         return resp.getData();
     }
 
@@ -2839,9 +2839,9 @@ public class ProcessgroupsApi {
      * @return ApiResponse&lt;TemplateEntity&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<TemplateEntity> uploadTemplateWithHttpInfo(String id, File template) throws ApiException {
+    public ApiResponse<String> uploadTemplateWithHttpInfo(String id, File template) throws ApiException {
         com.squareup.okhttp.Call call = uploadTemplateCall(id, template, null, null);
-        Type localVarReturnType = new TypeToken<TemplateEntity>(){}.getType();
+        Type localVarReturnType = new TypeToken<String>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 

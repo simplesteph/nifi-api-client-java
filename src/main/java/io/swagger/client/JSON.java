@@ -47,6 +47,7 @@ import java.util.Date;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.ISODateTimeFormat;
 
 public class JSON {
@@ -181,30 +182,41 @@ class DateAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {
  * Gson TypeAdapter for Joda DateTime type
  */
 class DateTimeTypeAdapter extends TypeAdapter<DateTime> {
-
-    private final DateTimeFormatter formatter = ISODateTimeFormat.dateTime();
-
-    @Override
-    public void write(JsonWriter out, DateTime date) throws IOException {
-        if (date == null) {
-            out.nullValue();
-        } else {
-            out.value(formatter.print(date));
+    
+        private final DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+                                                        .appendPattern("MM/dd/yyyy HH:mm:ss z")
+                                                        .toFormatter();
+    
+        private final DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
+                                                        .appendPattern("HH:mm:ss z")
+                                                        .toFormatter();
+    
+        @Override
+        public void write(JsonWriter out, DateTime date) throws IOException {
+            if (date == null) {
+                out.nullValue();
+            } else {
+                out.value(dateFormatter.print(date));
+            }
+        }
+    
+        @Override
+        public DateTime read(JsonReader in) throws IOException {
+            switch (in.peek()) {
+                case NULL:
+                    in.nextNull();
+                    return null;
+                default:
+                    String date = in.nextString();
+                    try{
+                        return timeFormatter.parseDateTime(date);
+                    }
+                    catch(IllegalArgumentException e){
+                        return dateFormatter.parseDateTime(date);
+                    }
+            }
         }
     }
-
-    @Override
-    public DateTime read(JsonReader in) throws IOException {
-        switch (in.peek()) {
-            case NULL:
-                in.nextNull();
-                return null;
-            default:
-                String date = in.nextString();
-                return formatter.parseDateTime(date);
-        }
-    }
-}
 
 /**
  * Gson TypeAdapter for Joda LocalDate type
